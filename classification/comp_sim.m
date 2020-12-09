@@ -51,10 +51,10 @@ for test_iter = 1:num_test
     end
     
     % save output structure
-    pair = struct;
-    pair.Mbest = Mbest;
-    pair.fit_score = fit_score;
-    pair.prior_score = prior_score;
+%    pair = struct;
+%    pair.Mbest = Mbest;
+%    pair.fit_score = fit_score;
+%    pair.prior_score = prior_score;
     fit_scores(test_iter,:,train_iter) = fit_score;
 %    fit_scores(:,:)
 end    
