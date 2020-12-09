@@ -32,7 +32,7 @@ K = length(G.models); % add image to model class (removed to save memory)
 prior_scores(train_iter,:) = G.scores;
 
 for test_iter = 1:num_test
-    
+    itest = test_row(test_iter);
     % refit models to new image
     Mbest = cell(K,1);
     fit_score = nan(K,1);
@@ -41,8 +41,10 @@ for test_iter = 1:num_test
     
 %    prior_scores(iter,:)
     
-    itest = test_row(test_iter);
-    img_test = cell_test{irun}{itest}.img;
+    %fn_fit_test = fullfile('model_fits',makestr('run',irun_other,'_test',itest,'_G'));
+    %load(fn_fit_test,'G');
+    img_test = cell_test{irun_other}{itest}.img;
+    
 
     for i=1:K
         fprintf(1,'re-fitting parse %d of %d\n',i,K);
@@ -51,12 +53,20 @@ for test_iter = 1:num_test
     end
     
     % save output structure
-    pair = struct;
-    pair.Mbest = Mbest;
-    pair.fit_score = fit_score;
-    pair.prior_score = prior_score;
+    %pair = struct;
+    %pair.Mbest = Mbest;
+    %pair.fit_score = fit_score;
+    %pair.prior_scores = prior_scores;
     fit_scores(test_iter,:,train_iter) = fit_score;
+ 
+    mean_scores = zeros(num_test, 1, num_train)
+    mean_fit_scores = mean2(fit_scores(test_iter,:,train_iter))
+    all_mean_fit_scores(test_iter,:,train_iter) = mean_fit_scores
+    
 %    fit_scores(:,:)
-end    
+end  
+
 end
+
+fitwmean_scores = [fit_scores,all_mean_fit_scores]
 save('outputfile2.mat', 'prior_scores', 'fit_scores');
